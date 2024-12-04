@@ -5,8 +5,9 @@ import { PrismaClient } from '@prisma/client';
 const app = express();
 const prisma = new PrismaClient();
 app.use(express.json());
-app.use(cors());
-
+app.use(cors({
+    origin: 'https://node-express-typescript-notes-project-1.onrender.com'
+  }));
 app.get("/api/notes", async (req, res) => {
     const notes = await prisma.note.findMany();
     res.json(notes);

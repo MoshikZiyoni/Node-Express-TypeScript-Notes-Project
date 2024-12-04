@@ -11,6 +11,13 @@ type Note = {
 }
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [notes, setNotes] = useState<Note[]>([]);
+
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+
   const [selectedNote, setSelectedNote] =
     useState<Note | null>(null);
 
@@ -22,14 +29,20 @@ const App = () => {
       try {
         const response = await axios.get('https://node-express-typescript-notes-project.onrender.com/api/notes');
         setNotes(response.data);
+        setError(null);
       } catch (error) {
         console.error('Error:', error);
+        setError('Failed to fetch notes. Please try again later.');
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchNotes();
   }, []);
 
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
  
 
 
@@ -40,10 +53,7 @@ const App = () => {
     setTitle(note.title);
   }
 
-  const [notes, setNotes] = useState<Note[]>([]);
-
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+  
 
 
   const handleAddNote = async (event: React.FormEvent) => {

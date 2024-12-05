@@ -94,3 +94,36 @@ textarea, input {
   background-color: red;
   color:white
 }
+
+.note-item:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.note-enter {
+  opacity: 0;
+}
+
+.note-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.note-exit {
+  opacity: 1;
+}
+
+.note-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-out;
+}
+
+.cancel-button {
+  background-color: red;
+  color: red;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: black;
+}

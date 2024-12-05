@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { title } from 'process';
-import { log } from 'console';
 import axios from 'axios';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import CircularIndeterminate from './components/Loading';
 
 type Note = {
   id: number;
@@ -14,15 +14,11 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
-
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
   const [selectedNote, setSelectedNote] =
     useState<Note | null>(null);
-
-
-
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -41,9 +37,14 @@ const App = () => {
     fetchNotes();
   }, []);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return (
+
+      <h2>Loading Notes... <CircularIndeterminate/></h2>
+    
+  );
   if (error) return <div>Error: {error}</div>;
- 
+
+
 
 
   const handleNoteClick = (note: Note) => {
@@ -53,7 +54,7 @@ const App = () => {
     setTitle(note.title);
   }
 
-  
+
 
 
   const handleAddNote = async (event: React.FormEvent) => {
@@ -64,7 +65,7 @@ const App = () => {
       content: content,
     };
     try {
-      const response = await axios.post('https://node-express-typescript-notes-project.onrender.com/api/notes', {title,content} );
+      const response = await axios.post('https://node-express-typescript-notes-project.onrender.com/api/notes', { title, content });
       setNotes(prevNotes => [...prevNotes, response.data]);
       setTitle('');
       setContent('');
@@ -104,19 +105,21 @@ const App = () => {
   const deleteNote = (
     event: React.MouseEvent,
     noteId: number
-  )  => {
+  ) => {
     event.stopPropagation();
     try {
       axios.delete(`https://node-express-typescript-notes-project.onrender.com/api/notes/${noteId}`);
-      setNotes(notes.filter(note => note.id!== noteId));
+      setNotes(notes.filter(note => note.id !== noteId));
     } catch (error) {
       console.error('Error:', error);
     }
-    const updatedNotes = notes.filter(note => note.id!== noteId);
+    const updatedNotes = notes.filter(note => note.id !== noteId);
     setNotes(updatedNotes)
   };
 
   return (
+    <>
+    
     <div className="app-container">
       <form className='note-form' onSubmit={(event) =>
         selectedNote
@@ -140,9 +143,8 @@ const App = () => {
         {selectedNote ? (
           <div className='edit-buttons'>
             <button type='submit' onClick={handleupdateNote}>Save</button>
-
-            <button style={{ backgroundColor: 'red' }} onClick={handleCancel}>Cancel</button>
-          </div>
+            <button className='cancel-button' onClick={handleCancel}>Cancel</button>
+            </div>
         ) : (
           <button type='submit'>Add Note</button>
 
@@ -153,9 +155,9 @@ const App = () => {
           <div className='note-item'
             onClick={() => handleNoteClick(note)}>
             <div className='notes-header'>
-              <button onClick={(event)=>deleteNote(event,note.id) 
+              <button onClick={(event) => deleteNote(event, note.id)
               }
-              >X</button>
+              ><HighlightOffIcon/></button>
             </div>
             <h2>{note.title}</h2>
             <p>{note.content}</p>
@@ -164,6 +166,7 @@ const App = () => {
 
       </div>
     </div>
+    </>
   );
 }
 

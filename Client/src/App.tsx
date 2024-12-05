@@ -54,6 +54,7 @@ const App = () => {
   }
 
   if (!isAuthenticated) {
+    axios.get('https://node-express-typescript-notes-project.onrender.com/api/notes');
     return (
       <div >
         <h2>Welcome to Notes App</h2>

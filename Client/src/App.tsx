@@ -5,6 +5,8 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import CircularIndeterminate from './components/Loading';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
+import { FcGoogle } from 'react-icons/fc';
+import  Microsofticon  from "./microsoft.png";
 
 type Note = {
   id: number;
@@ -20,6 +22,30 @@ const App = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+
+  const handleGoogleLogin = () => {
+    loginWithRedirect({
+      authorizationParams: {
+        connection: "google-oauth2",
+        redirect_uri: "https://node-express-typescript-notes-project-1.onrender.com",
+        // redirect_uri: "http://localhost:3000", // Ensure this matches your app's URL
+        
+      },
+    });
+  };
+
+
+  const handleMicrosoftLogin = () => {
+    
+    loginWithRedirect({
+      authorizationParams: {
+        connection: "windowslive", // This is the connection name for Microsoft
+         redirect_uri: "https://node-express-typescript-notes-project-1.onrender.com",
+        //  redirect_uri: "http://localhost:3000", // Ensure this matches your app's URL
+        scope: "openid profile email", // Optional, adjust scopes as needed
+      },
+    });
+  };
 
   if (isAuthenticated && user) {
     axios.defaults.headers.common['x-user-email'] = user.email;
@@ -67,24 +93,44 @@ const App = () => {
         <h2>Welcome to Notes App</h2>
         <p>Please log in to access your notes.</p>
         <Button style={{backgroundColor:'black'}} onClick={() => loginWithRedirect()}>Log In</Button>
+        
         {/* <div className="app-container"> */}
         <div className="notes-grid app-container">
         
-        <div className="note-item" onClick={() => loginWithRedirect()}>
+        <div className="note-item">
         
           
         
         <div className="notes-header" >
           <h2 >Start making notes.... </h2>
+          </div>
+
           <br></br>
           
+      <button
+        className="log-button button0 button2"
+        style={{borderRadius:'10px',boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)"  }}
+        onClick={handleGoogleLogin}
+      >
+        <FcGoogle style={{fontSize: '29px' }}/> Sign in with Google
+      </button>
+    
+      <button
+        className="log-button button0 button2 login_button" 
+        style={{borderRadius:'10px',boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)" ,paddingTop:'10px', paddingBottom:'10px'}}
+
+        onClick={handleMicrosoftLogin}
+      >
+        <img src={Microsofticon} style={{width:'8%'}} /> Sign in with Microsoft
+      </button>
         </div>
         </div>
-          </div>
+      
       </div>
-      // </div>
     );
   }
+
+  
 
   const handleNoteClick = (note: Note) => {
     setSelectedNote(note);
@@ -139,6 +185,9 @@ const App = () => {
       console.error('Error:', error);
     }
   };
+
+
+
 
   return (
     <div className="app-container">

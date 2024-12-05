@@ -19,6 +19,8 @@ interface CustomRequest extends Request {
   user?: { email: string };
 }
 
+
+
 // Middleware to extract and validate user email from headers
 app.use((req: CustomRequest, res: Response, next: NextFunction) => {
   const email = req.header('x-user-email');

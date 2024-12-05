@@ -54,13 +54,35 @@ const App = () => {
   }
 
   if (!isAuthenticated) {
-    axios.get('https://node-express-typescript-notes-project.onrender.com/api/notes');
-    return (
+    axios.get('https://node-express-typescript-notes-project.onrender.com/check', { timeout: 1 }).catch((error) => {
+      if (axios.isCancel(error)) {
+        // Request was canceled, do nothing
+        console.log('Request canceled');
+      } else {
+        console.error('Error:', error);
+      }
+    });    return (
       <div >
+        
         <h2>Welcome to Notes App</h2>
         <p>Please log in to access your notes.</p>
         <Button style={{backgroundColor:'black'}} onClick={() => loginWithRedirect()}>Log In</Button>
+        {/* <div className="app-container"> */}
+        <div className="notes-grid app-container">
+        
+        <div className="note-item" onClick={() => loginWithRedirect()}>
+        
+          
+        
+        <div className="notes-header" >
+          <h2 >Start making notes.... </h2>
+          <br></br>
+          
+        </div>
+        </div>
+          </div>
       </div>
+      // </div>
     );
   }
 
@@ -120,13 +142,6 @@ const App = () => {
 
   return (
     <div className="app-container">
-      {/* <header>
-        <h2>Notes App</h2>
-        <div className="user-info">
-          <p>Welcome, {user?.name || 'User'}!</p>
-          <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log Out</button>
-        </div>
-      </header> */}
 
       <form
         className="note-form"

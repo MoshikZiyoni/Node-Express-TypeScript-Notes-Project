@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "./src/index.ts",
   "scripts": {
-    "start": "npx nodemon"
+    "start": "npx tsx src/index.ts",
+    "dev": "npx nodemon src/index.ts",
+    "postinstall": "prisma generate"
   },
   "author": "",
   "license": "ISC",
@@ -21,7 +23,8 @@
     "prisma": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
-    "validator": "^13.12.0"
+    "validator": "^13.12.0",
+    "tsx": "^3.12.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
